@@ -245,25 +245,17 @@ rndr_header(struct buf *ob, const struct buf *text, int level, void *opaque)
 		bufputc(ob, '\n');
 
 	if (options->flags & HTML_TOC) {
-		BUFPUTSL(ob, "<h");
-		bufputi(ob, level);
-		BUFPUTSL(ob, " id=\"");
+		bufprintf(ob, "<h%d id=\"", level);
 		if (options->toc_id_prefix) {
 			bufputs(ob, options->toc_id_prefix);
 		}
-		BUFPUTSL(ob, "toc_");
-		bufputi(ob, options->toc_data.header_count++);
-		BUFPUTSL(ob, "\">");
+		bufprintf(ob, "toc_%d\">", options->toc_data.header_count++);
 	} else {
-		BUFPUTSL(ob, "<h");
-		bufputi(ob, level);
-		BUFPUTSL(ob, ">");
+		bufprintf(ob, "<h%d>", level);
 	}
 
 	if (text) bufput(ob, text->data, text->size);
-	BUFPUTSL(ob, "</h");
-	bufputi(ob, level);
-	BUFPUTSL(ob, ">\n");
+	bufprintf(ob, "</h%d>\n", level);
 }
 
 static int
@@ -604,9 +596,7 @@ rndr_tablecell(struct buf *ob, const struct buf *text, int flags, void *opaque, 
 	}
 
 	if (col_span > 1) {
-		BUFPUTSL(ob, " colspan=\"");
-		bufputi(ob, col_span);
-		BUFPUTSL(ob, "\" ");
+		bufprintf(ob, " colspan=\"%d\" ", col_span);
 	}
 
 	switch (flags & MKD_TABLE_ALIGNMASK) {
@@ -688,9 +678,7 @@ toc_header(struct buf *ob, const struct buf *text, int level, void *opaque)
 		bufputs(ob, options->toc_id_prefix);
 	}
 
-	BUFPUTSL(ob, "toc_");
-	bufputi(ob, options->toc_data.header_count++);
-	BUFPUTSL(ob, "\">");
+	bufprintf(ob, "toc_%d\">", options->toc_data.header_count++);
 	if (text)
 		escape_html(ob, text->data, text->size);
 	BUFPUTSL(ob, "</a>\n");

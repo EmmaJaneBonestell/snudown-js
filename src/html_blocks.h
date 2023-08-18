@@ -1,4 +1,4 @@
-/* C code produced by gperf version 3.0.3 */
+/* ANSI-C code produced by gperf version 3.1 */
 /* Command-line: gperf -N find_block_tag -H hash_block_tag -C -c -E --ignore-case html_block_names.txt  */
 /* Computed positions: -k'1-2' */
 
@@ -26,7 +26,7 @@
       && ('w' == 119) && ('x' == 120) && ('y' == 121) && ('z' == 122) \
       && ('{' == 123) && ('|' == 124) && ('}' == 125) && ('~' == 126))
 /* The character set is not based on ISO-646.  */
-error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
+#error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gperf@gnu.org>."
 #endif
 
 /* maximum key range = 37, duplicates = 0 */
@@ -59,10 +59,7 @@ static unsigned char gperf_downcase[256] =
 #ifndef GPERF_CASE_STRNCMP
 #define GPERF_CASE_STRNCMP 1
 static int
-gperf_case_strncmp (s1, s2, n)
-     register const char *s1;
-     register const char *s2;
-     register unsigned int n;
+gperf_case_strncmp (register const char *s1, register const char *s2, register size_t n)
 {
   for (; n > 0;)
     {
@@ -87,9 +84,7 @@ inline
 #endif
 #endif
 static unsigned int
-hash_block_tag (str, len)
-     register const char *str;
-     register unsigned int len;
+hash_block_tag (register const char *str, register size_t len)
 {
   static const unsigned char asso_values[] =
     {
@@ -101,10 +96,10 @@ hash_block_tag (str, len)
        8, 30, 25, 20, 15, 10, 38, 38, 38, 38,
       38, 38, 38, 38, 38, 38,  0, 38,  0, 38,
        5,  5,  5, 15,  0, 38, 38,  0, 15, 10,
-       0, 38, 38, 15,  0,  5, 38, 38, 38, 38,
+       0,  0, 38, 15,  0,  5, 38, 38, 38, 38,
       38, 38, 38, 38, 38, 38, 38, 38,  0, 38,
        0, 38,  5,  5,  5, 15,  0, 38, 38,  0,
-      15, 10,  0, 38, 38, 15,  0,  5, 38, 38,
+      15, 10,  0,  0, 38, 15,  0,  5, 38, 38,
       38, 38, 38, 38, 38, 38, 38, 38, 38, 38,
       38, 38, 38, 38, 38, 38, 38, 38, 38, 38,
       38, 38, 38, 38, 38, 38, 38, 38, 38, 38,
@@ -120,7 +115,7 @@ hash_block_tag (str, len)
       38, 38, 38, 38, 38, 38, 38, 38, 38, 38,
       38, 38, 38, 38, 38, 38, 38
     };
-  register int hval = len;
+  register unsigned int hval = len;
 
   switch (hval)
     {
@@ -134,20 +129,12 @@ hash_block_tag (str, len)
   return hval;
 }
 
-#ifdef __GNUC__
-__inline
-#ifdef __GNUC_STDC_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
-#endif
 const char *
-find_block_tag (str, len)
-     register const char *str;
-     register unsigned int len;
+find_block_tag (register const char *str, register size_t len)
 {
   enum
     {
-      TOTAL_KEYWORDS = 24,
+      TOTAL_KEYWORDS = 25,
       MIN_WORD_LENGTH = 1,
       MAX_WORD_LENGTH = 10,
       MIN_HASH_VALUE = 1,
@@ -175,7 +162,8 @@ find_block_tag (str, len)
       "",
       "h6",
       "pre",
-      "", "",
+      "span",
+      "",
       "script",
       "h5",
       "noscript",
@@ -187,15 +175,14 @@ find_block_tag (str, len)
       "", "", "",
       "h3",
       "", "", "", "",
-      "h2",
-      "span"
+      "h2"
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {
-      register int key = hash_block_tag (str, len);
+      register unsigned int key = hash_block_tag (str, len);
 
-      if (key <= MAX_HASH_VALUE && key >= 0)
+      if (key <= MAX_HASH_VALUE)
         {
           register const char *s = wordlist[key];
 

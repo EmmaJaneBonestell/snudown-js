@@ -6,18 +6,23 @@ mkdir -p "build"
 
 # Compile src/html_entities.gperf
 
-gperf src/html_entities.gperf > build/html_entities.c
+gperf src/html_entities.gperf > build/html_entities.h
+gperf -N find_block_tag -H hash_block_tag -C -c -E \
+--ignore-case html_block_names.txt > src/html_blocks.h
 
 # Build Snudown
 
-emcc snudown.c src/autolink.c src/buffer.c src/markdown.c src/stack.c html/houdini_href_e.c html/houdini_html_e.c html/html.c build/html_entities.c \
--I src -I html \
+emcc snudown.c src/autolink.c src/buffer.c src/markdown.c \
+src/siphash.c src/stack.c html/houdini_href_e.c \
+html/houdini_html_e.c html/html.c \
+-I src -I html --js-library crypto.js \
 --pre-js header.js --post-js footer.js \
 -o build/snudown_emscripten.js \
--Oz -flto=full --closure 2 -DNDEBUG \
+-O1 -flto=full --closure 2 -DNDEBUG \
 -s WASM=0 \
 -s SINGLE_FILE=1 \
 -s EXPORTED_FUNCTIONS=['_default_renderer','_wiki_renderer','_malloc','_free'] \
+-s EXPORTED_RUNTIME_METHODS=['setValue','stringToUTF8','lengthBytesUTF8','UTF8ToString'] \
 -s MALLOC=emmalloc \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s STACK_SIZE=8192 \

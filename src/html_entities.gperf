@@ -6,8 +6,6 @@
 %enum
 %includes
 %{
-#include "html_entities.h"
-
 #include <stdlib.h>
 #include <stdint.h>
 
